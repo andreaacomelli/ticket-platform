@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <title>Dettaglio Ticket</title>
+	    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+	</head>
+	<body>
+	    <h1>Dettaglio Ticket</h1>
+	    
+	    <!-- dettaglio ticket -->
+	    <div class="ticket-detail">
+	        <h2 th:text="${ticket.titolo}">Titolo del Ticket</h2>
+	        <p><strong>Descrizione:</strong> <span th:text="${ticket.descrizione}">Descrizione del Ticket</span></p>
+	        <p><strong>Categoria:</strong> <span th:text="${ticket.categoria.nome}">Categoria</span></p>
+	        <p><strong>Stato:</strong> <span th:text="${ticket.stato}">Stato</span></p>
+	    </div>
+	    
+	    <!-- visualizzazione nota -->
+	    <div class="notes-section">
+	        <h2>Note</h2>
+	        <div th:each="nota : ${note}" class="note">
+	            <div class="note-header">
+	                <span th:text="${nota.autore}">Autore</span> - 
+	                <span th:text="${#temporals.format(nota.dataCreazione, 'dd/MM/yyyy HH:mm')}">Data Creazione</span>
+	            </div>
+	            <div class="note-text" th:text="${nota.testo}">Testo della Nota</div>
+	        </div>
+	    </div>
+	    
+	    <!-- aggiunta nuova nota -->
+	    <div class="form-section">
+	        <h2>Aggiungi una Nuova Nota</h2>
+	        <form th:action="@{/admin/ticket/{id}/nota(id=${ticket.id})}" method="post">
+	            <div class="form-group">
+	                <label for="noteText">Testo Nota:</label>
+	                <textarea id="noteText" name="text" rows="4" required></textarea>
+	            </div>
+	            <div class="form-group">
+	                <button type="submit">Aggiungi Nota</button>
+	            </div>
+	        </form>
+	    </div>
+		
+		<!-- Aggiorna stato ticket -->
+		<div class="form-group" sec:authorize="hasAuthority('OPERATORE')">
+			<form th:action="@{/operatore/ticket/{id}/updateStatus(id=${ticket.id})}" method="post">
+		        <label for="stato">Modifica Stato</label>
+		        <select id="stato" name="stato">
+		            <option value="APERTO" th:selected="${ticket.stato == 'APERTO'}">Aperto</option>
+		            <option value="IN_LAVORAZIONE" th:selected="${ticket.stato == 'IN_LAVORAZIONE'}">In Lavorazione</option>
+		            <option value="CHIUSO" th:selected="${ticket.stato == 'CHIUSO'}">Chiuso</option>
+		        </select>
+		        <button type="submit">Aggiorna Stato</button>
+		    </form>
+		</div>
+		
+		<!-- bottoni ADMIN-->
+		<div class="button-container" sec:authorize="hasAuthority('ADMIN')">
+	        <a th:href="@{/admin/dashboard}" class="button">Torna indietro</a>
+			<a th:href="@{/admin/ticket/{id}/edit(id=${ticket.id})}" class="button">Modifica Ticket</a>
+		</div>
+		
+		<!-- bottone OPERATORE-->
+		<div class="button-container" sec:authorize="hasAuthority('OPERATORE')">
+	        <a th:href="@{/operatore/dashboard}" class="button">Torna indietro</a>
+		</div>
+	</body>
+</html>

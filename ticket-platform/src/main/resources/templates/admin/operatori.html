@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="UTF-8">
+	    <title>Elenco Operatori</title>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+	</head>
+	<body>
+	    <h1>Operatori</h1>
+		
+		<!--- Tabella operatori -->
+	    <table>
+	        <thead>
+	            <tr>
+	                <th>ID</th>
+	                <th>Username</th>
+	                <th>Email</th>
+					<th>Disponibilità</th>
+	                <th>Azioni</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <tr th:each="utente : ${operatori}">
+	                <td th:text="${utente.id}"></td>
+	                <td th:text="${utente.username}"></td>
+	                <td th:text="${utente.email}"></td>
+					<td th:text="${utente.disponibile ? 'Disponibile' : 'Non disponibile'}"></td>
+	                <td>
+	                    <a th:href="@{/admin/operatori/{id}/delete(id=${utente.id})}" th:onclick="'return confirm(\'Sei sicuro di voler eliminare questo operatore?\');'">Elimina</a>
+	                </td>
+	            </tr>
+	        </tbody>
+	    </table>
+		
+		<!--- Bottone dashboard -->
+		<div class="button-container"> 
+			<a th:href="@{/admin/dashboard}" class="button">Torna alla Dashboard</a>
+		</div>
+	</body>
+</html>

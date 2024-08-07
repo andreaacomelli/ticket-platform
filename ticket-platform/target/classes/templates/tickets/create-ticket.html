@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <title>Crea Nuovo Ticket</title>
+	    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+	</head>
+	<body>
+	    <h1>Crea Nuovo Ticket</h1>
+	    <form th:action="@{/admin/ticket/new}" th:object="${ticket}" method="post">
+	        <div>
+	            <label for="titolo">Titolo:</label>
+	            <input type="text" id="titolo" th:field="*{titolo}" required>
+	        </div>
+	        <div>
+	            <label for="descrizione">Descrizione:</label>
+	            <textarea id="descrizione" th:field="*{descrizione}" required></textarea>
+	        </div>
+	        <div>
+	            <label for="categoria">Categoria:</label>
+	            <select id="categoria" th:field="*{categoria.id}">
+	                <option th:each="cat : ${categorie}" th:value="${cat.id}" th:text="${cat.nome}"></option>
+	            </select>
+	        </div>
+			<br>
+	        <div>
+	            <label for="stato">Stato:</label>
+	            <select id="stato" th:field="*{stato}">
+	                <option value="APERTO">Aperto</option>
+	                <option value="IN_LAVORAZIONE">In Lavorazione</option>
+	                <option value="CHIUSO">Chiuso</option>
+	            </select>
+	        </div>
+			<br>
+			<div>
+				<label for="utente">Assegna a Operatore:</label>
+			    <select id="utente" th:field="*{utente.id}"> 
+			    <option th:each="utente : ${operatori}" th:value="${utente.id}" th:text="${utente.username}"></option>
+			    </select>
+			</div>
+			<br>
+	        <button type="submit">Crea Ticket</button>
+	    </form>
+		<div class="button-container"> 
+			<a th:href="@{/admin/dashboard}" class="button">Torna alla Dashboard</a>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <title>Dashboard Operatore</title>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+	</head>
+	<body>
+	    <div class="container">
+	        <h1>Dashboard Operatore</h1>
+	        
+			<!-- Sezione dettagli -->
+	        <div class="details">
+	            <h2>Dettagli Operatore</h2>
+	            <p><strong>Email:</strong> <span th:text="${operatore.email}">email@example.com</span></p>
+				<p><strong>Stato:</strong> 
+				    <span th:text="${operatore.disponibile ? 'Disponibile' : 'Non disponibile'}">Stato</span>
+				</p>
+				<div class="form-group">
+					<form th:action="@{/operatore/updateStatoUtente}" method="post"th:if="${canUpdateStato}">
+		                <input type="hidden" name="id" th:value="${operatore.id}">
+		                <label for="stato">Modifica Stato</label>
+		                <select id="stato" name="stato">
+		                    <option value="true" th:selected="${operatore.disponibile}">Disponibile</option>
+		                    <option value="false" th:selected="${!operatore.disponibile}">Non Disponibile</option>
+		                </select>
+		                <button type="submit">Aggiorna Stato</button>
+		            </form>
+					<div th:if="${!canUpdateStato}">
+		                <p>Non puoi aggiornare il tuo stato se hai ticket aperti. Il tuo stato è impostato su "Non Disponibile".</p>
+		            </div>
+				</div>
+	        </div>
+	        
+			<!-- Tabella tasks -->
+	        <div class="tasks">
+	            <h2>Lista di Task Assegnate</h2>
+	            <table>
+	                <thead>
+	                    <tr>
+	                        <th>ID</th>
+	                        <th>Titolo</th>
+	                        <th>Categoria</th>
+	                        <th>Stato</th>
+	                        <th>Azione</th>
+	                    </tr>
+	                </thead>
+	                <tbody>
+						<tr th:each="ticket : ${tasks}">
+	                        <td th:text="${ticket.id}">1</td>
+	                        <td th:text="${ticket.titolo}">Titolo Task</td>
+	                        <td th:text="${ticket.categoria}">Categoria Task</td>
+	                        <td th:text="${ticket.stato}">Stato Task</td>
+							<td><a th:href="@{/operatore/ticket/{ticketId}(ticketId=${ticket.id})}" class="button">Dettagli</a></td>
+	                    </tr>
+	                </tbody>
+	            </table>
+	        </div>
+			
+			<!-- Bottone Logout -->
+			<div class="button-container">
+	        	<a th:href="@{/index}" class="button">Logout</a>
+			</div>
+	    </div>
+	</body>
+</html>

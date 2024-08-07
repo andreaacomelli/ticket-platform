@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <title>Dashboard Admin</title>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+	</head>
+	<body>
+	    <h1>Dashboard Admin</h1>
+	
+	    <!-- Form di ricerca -->
+	    <div class="search-form">
+	        <form th:action="@{/admin/dashboard}" method="get">
+	            <div class="form-group">
+	                <label for="search">Cerca ticket per Titolo:</label>
+	                <input type="text" id="search" name="search" th:value="${searchText}" placeholder="Inserisci il titolo del ticket">
+	            </div>
+	            <button type="submit">Cerca</button>
+	        </form>
+	    </div>
+		
+		<!-- Bottoni -->
+		<div class="button-container">
+	        <a th:href="@{/admin/operatori}" class="button">Visualizza gli operatori</a>
+			<a th:href="@{/admin/ticket/new}" class="button">Crea Nuovo Ticket</a>
+			<a th:href="@{/index}" class="button">Logout</a>
+		</div>
+	
+	    <!-- Tabella ticket -->
+	    <table>
+	        <thead>
+	            <tr>
+	                <th>ID</th>
+	                <th>Titolo</th>
+	                <th>Categoria</th>
+	                <th>Stato</th>
+	                <th>Dettagli</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <tr th:each="ticket : ${tickets}">
+	                <td th:text="${ticket.id}">ID</td>
+	                <td th:text="${ticket.titolo}">Titolo</td>
+	                <td th:text="${ticket.categoria}">Categoria</td>
+	                <td th:text="${ticket.stato}">Stato</td>
+	        		<td><a th:href="@{/admin/ticket/{id}(id=${ticket.id})}" class="details-link">Vedi Dettagli</a></td>
+	            </tr>
+	        </tbody>
+	    </table>
+	</body>
+</html>

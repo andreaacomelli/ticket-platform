@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <title>Modifica Ticket</title>
+	    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+	</head>
+	<body>
+	    <h1>Modifica Ticket</h1>
+		
+		<!-- Form modifica -->
+	    <form th:action="@{/admin/ticket/{id}/edit(id=${ticket.id})}" th:object="${ticket}" method="post">
+	        <div>
+	            <label for="titolo">Titolo:</label>
+	            <input type="text" id="titolo" th:field="*{titolo}" required>
+	        </div>
+	        <div>
+	            <label for="descrizione">Descrizione:</label>
+	            <textarea id="descrizione" th:field="*{descrizione}" required></textarea>
+	        </div>
+	        <div>
+	            <label for="categoria">Categoria:</label>
+	            <select id="categoria" th:field="*{categoria.id}">
+	                <option th:each="cat : ${categorie}" th:value="${cat.id}" th:text="${cat.nome}"></option>
+	            </select>
+				<br>
+				<br>
+	        </div>
+	        <div>
+	            <label for="stato">Stato:</label>
+	            <select id="stato" th:field="*{stato}">
+	                <option value="APERTO">Aperto</option>
+	                <option value="IN_LAVORAZIONE">In Lavorazione</option>
+	                <option value="CHIUSO">Chiuso</option>
+	            </select>
+	        </div>
+			<br>
+	        <button type="submit">Aggiorna Ticket</button>
+	    </form>
+		
+		<!-- bottone indietro -->
+		<div class="button-container">
+			<a th:href="@{/admin/ticket/{id}(id=${ticket.id})}" class="button">Annulla</a>
+		</div>
+	    
+	</body>
+</html>
